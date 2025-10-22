@@ -7,16 +7,19 @@ using namespace std;
 // } Driver Code Ends
 
 class Solution {
-  public:
-    bool solve(vector<int>& arr, int sum,int idx) {
-        if(sum == 0)
-            return true;
-        if(idx < 0 || sum < 0)
-            return false;
-        return  solve(arr,sum-arr[idx],idx-1) || solve(arr,sum,idx-1);
+    bool memoi(int i,int sum,vector<int>& arr,vector<vector<int>>& dp) {
+        if(sum == 0)    return true;
+        if(i < 0 || sum < 0)   return false;
+        if(dp[sum][i] != -1)    return dp[sum][i];
+        
+        return dp[sum][i] = memoi(i-1,sum-arr[i],arr,dp) || memoi(i-1,sum,arr,dp);
     }
+    
+  public:
     bool isSubsetSum(vector<int>& arr, int sum) {
-        return solve(arr,sum,arr.size()-1);
+        int n = arr.size();
+        vector<vector<int>> dp(sum+1,vector<int> (n,-1));
+        return memoi(arr.size()-1,sum,arr,dp);
     }
 };
 
